@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { ListItemType } from 'src/components/List'
 
 import Header from './Header'
-import Footer from './Footer'
 import Sidebar from './Sidebar'
 import { MobileNotSupported } from './MobileNotSupported'
 
@@ -111,7 +110,6 @@ const Layout: React.FC<Props> = ({
         </SidebarWrapper>
         <ContentWrapper>
           <div>{children}</div>
-          <Footer />
         </ContentWrapper>
       </BodyWrapper>
 
