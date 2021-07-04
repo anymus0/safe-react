@@ -12,7 +12,7 @@ const baseConfig: EnvironmentSettings = {
     gasParameter: 'average',
     gweiFactor: '1e8',
   },
-  rpcServiceUrl: 'https://mainnet.infura.io:443/v3',
+  rpcServiceUrl: 'https://lagoon2.lagooncompany.xyz/rpc',
   networkExplorerName: 'Etherscan',
   networkExplorerUrl: 'https://etherscan.io',
   networkExplorerApiUrl: 'https://api.etherscan.io/api',

@@ -27,7 +27,7 @@ export const getNetworkLabel = (id: number): string => {
   return cfg ? cfg.network.label : ''
 }
 
-export const usesInfuraRPC = [ETHEREUM_NETWORK.MAINNET, ETHEREUM_NETWORK.RINKEBY].includes(getNetworkId())
+export const usesInfuraRPC = INFURA_TOKEN !== ''
 
 const getCurrentEnvironment = (): string => {
   switch (NODE_ENV) {
@@ -101,8 +101,14 @@ export const getGasPrice = (): number | undefined => getConfig()?.gasPrice
 
 export const getGasPriceOracle = (): GasPriceOracle | undefined => getConfig()?.gasPriceOracle
 
-export const getRpcServiceUrl = (): string =>
-  usesInfuraRPC ? `${getConfig().rpcServiceUrl}/${INFURA_TOKEN}` : getConfig().rpcServiceUrl
+// export const getRpcServiceUrl = (): string =>
+//   usesInfuraRPC ? `${getConfig().rpcServiceUrl}/${INFURA_TOKEN}` : getConfig().rpcServiceUrl
+
+export const getRpcServiceUrl = (): string => {
+  const rpcURL = usesInfuraRPC ? `${getConfig().rpcServiceUrl}/${INFURA_TOKEN}` : getConfig().rpcServiceUrl
+  console.log(rpcURL)
+  return rpcURL
+}
 
 export const getSafeClientGatewayBaseUrl = (safeAddress: string) => `${getClientGatewayUrl()}/safes/${safeAddress}`
 

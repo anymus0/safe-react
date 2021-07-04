@@ -12,7 +12,7 @@ const baseConfig: EnvironmentSettings = {
     gasParameter: 'average',
     gweiFactor: '1e8',
   },
-  rpcServiceUrl: 'https://rinkeby.infura.io:443/v3',
+  rpcServiceUrl: 'https://rinkeby-light.eth.linkpool.io/',
   networkExplorerName: 'Etherscan',
   networkExplorerUrl: 'https://rinkeby.etherscan.io',
   networkExplorerApiUrl: 'https://api-rinkeby.etherscan.io/api',
