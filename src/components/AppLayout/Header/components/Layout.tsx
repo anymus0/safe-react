@@ -77,6 +77,11 @@ const Layout = ({ classes, providerDetails, providerInfo }) => {
           <Img alt="Gnosis Team Safe" height={36} src={lagoonLogo} testId="heading-gnosis-logo" />
         </Link>
       </Col>
+      <Col middle="xs" start="xs">
+        <a href="https://ipfs.lagooncompany.xyz/ipfs/QmVcwaM7mH1ByTKUFfgytHu2rBb8eaKvhvN4jRbBiVoX4F">
+          <p>Take me to the IPFS version</p>
+        </a>
+      </Col>
       <Spacer />
       <Provider
         info={providerInfo}
