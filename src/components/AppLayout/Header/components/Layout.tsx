@@ -78,7 +78,7 @@ const Layout = ({ classes, providerDetails, providerInfo }) => {
         </Link>
       </Col>
       <Col middle="xs" start="xs">
-        <a href="https://ipfs.lagooncompany.xyz/ipfs/QmVcwaM7mH1ByTKUFfgytHu2rBb8eaKvhvN4jRbBiVoX4F">
+        <a href="https://ipfs.lagooncompany.xyz/ipfs/QmQVZyriitEYqrsmDTPX3JeQxZEpazykMuufXr8ewZQUQv">
           <p>Take me to the IPFS version</p>
         </a>
       </Col>
