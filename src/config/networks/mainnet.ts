@@ -6,13 +6,13 @@ const baseConfig: EnvironmentSettings = {
   clientGatewayUrl: 'https://safe-client.mainnet.staging.gnosisdev.com/v1',
   txServiceUrl: 'https://safe-transaction.mainnet.staging.gnosisdev.com/api/v1',
   safeUrl: 'https://vault.lagooncompany.xyz',
-  safeAppsUrl: 'https://safe-apps.dev.gnosisdev.com',
   gasPriceOracle: {
-    url: 'https://ethgasstation.info/json/ethgasAPI.json?api-key=${ETHGASSTATION_API_KEY}',
+    url: `https://ethgasstation.info/json/ethgasAPI.json?api-key=${ETHGASSTATION_API_KEY}`,
     gasParameter: 'average',
     gweiFactor: '1e8',
   },
   rpcServiceUrl: 'https://lagoon2.lagooncompany.xyz/rpc',
+  safeAppsRpcServiceUrl: 'https://lagoon2.lagooncompany.xyz/rpc',
   networkExplorerName: 'Etherscan',
   networkExplorerUrl: 'https://etherscan.io',
   networkExplorerApiUrl: 'https://api.etherscan.io/api',
@@ -27,13 +27,11 @@ const mainnet: NetworkConfig = {
     staging: {
       ...baseConfig,
       safeUrl: 'https://safe-team-mainnet.staging.gnosisdev.com/app/',
-      safeAppsUrl: 'https://safe-apps.staging.gnosisdev.com',
     },
     production: {
       ...baseConfig,
       clientGatewayUrl: 'https://safe-client.mainnet.gnosis.io/v1',
       txServiceUrl: 'https://safe-transaction.mainnet.gnosis.io/api/v1',
-      safeAppsUrl: 'https://apps.gnosis-safe.io',
     },
   },
   network: {
