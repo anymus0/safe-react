@@ -1,16 +1,13 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { Breadcrumb, BreadcrumbElement, Menu } from '@gnosis.pm/safe-react-components'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { generatePath, Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import ReceiveModal from 'src/components/App/ReceiveModal'
-import { styles } from './style'
-
-import Modal from 'src/components/Modal'
 import Col from 'src/components/layout/Col'
+import Modal from 'src/components/Modal'
+import ReceiveModal from 'src/components/App/ReceiveModal'
 
-import Row from 'src/components/layout/Row'
-import { SAFELIST_ADDRESS } from 'src/routes/routes'
+import { SAFE_ROUTES, SAFELIST_ADDRESS } from 'src/routes/routes'
 import SendModal from 'src/routes/safe/components/Balances/SendModal'
 import { CurrencyDropdown } from 'src/routes/safe/components/CurrencyDropdown'
 import { currentSafeWithNames } from 'src/logic/safe/store/selectors'
@@ -38,15 +35,18 @@ const INITIAL_STATE = {
 export const COINS_LOCATION_REGEX = /\/balances\/?$/
 export const COLLECTIBLES_LOCATION_REGEX = /\/balances\/collectibles$/
 
-const useStyles = makeStyles(styles)
-
 const Balances = (): ReactElement => {
-  const classes = useStyles()
   const [state, setState] = useState(INITIAL_STATE)
+  const matchSafeWithAction = useRouteMatch({
+    path: `${SAFELIST_ADDRESS}/:safeAddress/:safeAction/:safeSubaction?`,
+  }) as {
+    url: string
+    params: Record<string, string>
+  }
 
-  const { address, featuresEnabled, name: safeName } = useSelector(currentSafeWithNames)
+  const { address: safeAddress, featuresEnabled, name: safeName } = useSelector(currentSafeWithNames)
 
-  useFetchTokens(address)
+  useFetchTokens(safeAddress)
 
   useEffect(() => {
     const erc721Enabled = Boolean(featuresEnabled?.includes(FEATURES.ERC721))
@@ -85,36 +85,69 @@ const Balances = (): ReactElement => {
     }))
   }
 
-  const { controls, tokenControls } = classes
   const { erc721Enabled, sendFunds, showReceive } = state
+
+  let balancesSection
+  switch (matchSafeWithAction.url) {
+    case generatePath(SAFE_ROUTES.ASSETS_BALANCES, {
+      safeAddress,
+    }):
+      balancesSection = 'Coins'
+      break
+    case generatePath(SAFE_ROUTES.ASSETS_COLLECTIBLES, {
+      safeAddress,
+    }):
+      balancesSection = 'Collectibles'
+      break
+    default:
+      balancesSection = ''
+  }
 
   return (
     <>
-      <Row align="center" className={controls}>
+      <Menu>
+        <Col start="sm" sm={6} xs={12}>
+          <Breadcrumb>
+            <BreadcrumbElement iconType="assets" text="ASSETS" color="primary" />
+            <BreadcrumbElement text={balancesSection} color="placeHolder" />
+          </Breadcrumb>
+        </Col>
         <Switch>
           <Route
-            path={`${SAFELIST_ADDRESS}/${address}/balances/collectibles`}
+            path={generatePath(SAFE_ROUTES.ASSETS_COLLECTIBLES, {
+              safeAddress,
+            })}
             exact
             render={() => {
-              return !erc721Enabled ? <Redirect to={`${SAFELIST_ADDRESS}/${address}/balances`} /> : null
-            }}
-          />
-          <Route
-            path={`${SAFELIST_ADDRESS}/${address}/balances`}
-            exact
-            render={() => {
-              return (
-                <Col className={tokenControls} end="sm" xs={12}>
-                  <CurrencyDropdown />
-                </Col>
+              return !erc721Enabled ? (
+                <Redirect
+                  to={generatePath(SAFE_ROUTES.ASSETS_BALANCES, {
+                    safeAddress,
+                  })}
+                />
+              ) : (
+                <Col end="sm" sm={6} xs={12}></Col>
               )
             }}
           />
+          <Route
+            path={generatePath(SAFE_ROUTES.ASSETS_BALANCES, {
+              safeAddress,
+            })}
+            exact
+            render={() => (
+              <Col end="sm" sm={6} xs={12}>
+                <CurrencyDropdown />
+              </Col>
+            )}
+          />
         </Switch>
-      </Row>
+      </Menu>
       <Switch>
         <Route
-          path={`${SAFELIST_ADDRESS}/${address}/balances/collectibles`}
+          path={generatePath(SAFE_ROUTES.ASSETS_COLLECTIBLES, {
+            safeAddress,
+          })}
           exact
           render={() => {
             if (erc721Enabled) {
@@ -124,7 +157,9 @@ const Balances = (): ReactElement => {
           }}
         />
         <Route
-          path={`${SAFELIST_ADDRESS}/${address}/balances`}
+          path={generatePath(SAFE_ROUTES.ASSETS_BALANCES, {
+            safeAddress,
+          })}
           render={() => {
             return wrapInSuspense(<Coins showReceiveFunds={() => onShow('Receive')} showSendFunds={showSendFunds} />)
           }}
@@ -143,7 +178,7 @@ const Balances = (): ReactElement => {
         paperClassName="receive-modal"
         title="Receive Tokens"
       >
-        <ReceiveModal safeAddress={address} safeName={safeName} onClose={() => onHide('Receive')} />
+        <ReceiveModal safeAddress={safeAddress} safeName={safeName} onClose={() => onHide('Receive')} />
       </Modal>
     </>
   )
